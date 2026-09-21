@@ -4,7 +4,8 @@ import { gradientFor } from "../utils/avatar.js";
 
 export default function EntryScreen({ displayName, setDisplayName }) {
   const { createRoom, joinRoom, listRooms, status, error, clearError } = useChat();
-  const [mode, setMode] = useState("join"); // "join" | "create"
+  const [step, setStep] = useState("cover"); // "cover" | "choose" | "form"
+  const [mode, setMode] = useState(null); // "join" | "create"
   const [name, setName] = useState(displayName || "");
   const [room, setRoom] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +15,7 @@ export default function EntryScreen({ displayName, setDisplayName }) {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    if (status !== "connected") return;
+    if (status !== "connected" || step !== "form" || mode !== "join") return;
     let cancelled = false;
     async function refresh() {
       const list = await listRooms();
@@ -23,10 +24,17 @@ export default function EntryScreen({ displayName, setDisplayName }) {
     refresh();
     const interval = setInterval(refresh, 4000);
     return () => { cancelled = true; clearInterval(interval); };
-  }, [status, listRooms]);
+  }, [status, listRooms, step, mode]);
 
-  function switchMode(next) {
+  function chooseMode(next) {
     setMode(next);
+    setStep("form");
+    clearError();
+  }
+
+  function backToChoices() {
+    setStep("choose");
+    setMode(null);
     clearError();
   }
 
@@ -43,24 +51,65 @@ export default function EntryScreen({ displayName, setDisplayName }) {
     setBusy(false);
     // On success the room shows up in ChatContext state and App switches the
     // view automatically. On failure, `error` from context is already set
-    // and rendered below — nothing else to wire up here.
+    // and rendered below.
   }
 
+  // ---------- Step 1: cover ----------
+  if (step === "cover") {
+    return (
+      <div className="ig-entry-screen">
+        <div className="ig-cover-page">
+          <div className="ig-cover-title">Bridge</div>
+          <div className="ig-cover-slogan">Connects the Unconnected</div>
+          <button className="ig-primary-btn ig-cover-cta" onClick={() => setStep("choose")}>
+            Get started
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------- Step 2: choose Join or Create ----------
+  if (step === "choose") {
+    return (
+      <div className="ig-entry-screen">
+        <div className="ig-entry-card">
+          <div className="ig-cover ig-cover-compact">
+            <div className="ig-cover-title ig-cover-title-sm">Bridge</div>
+          </div>
+
+          <button className="ig-choice-card" onClick={() => chooseMode("join")}>
+            <span className="ig-choice-icon">🔑</span>
+            <span className="ig-choice-text">
+              <span className="ig-choice-title">Join room</span>
+              <span className="ig-choice-sub">Enter an existing room by name</span>
+            </span>
+            <span className="ig-choice-arrow">›</span>
+          </button>
+
+          <button className="ig-choice-card" onClick={() => chooseMode("create")}>
+            <span className="ig-choice-icon">✨</span>
+            <span className="ig-choice-text">
+              <span className="ig-choice-title">Create room</span>
+              <span className="ig-choice-sub">Start a brand new room</span>
+            </span>
+            <span className="ig-choice-arrow">›</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------- Step 3: the actual form ----------
   return (
     <div className="ig-entry-screen">
       <div className="ig-entry-card">
-        <div className="ig-cover">
-          <div className="ig-cover-title">Bridge</div>
-          <div className="ig-cover-slogan">Connects the Unconnected</div>
-        </div>
+        <button type="button" className="ig-entry-back" onClick={backToChoices}>
+          ‹ Back
+        </button>
 
-        <div className="ig-mode-tabs">
-          <button type="button" className={mode === "join" ? "active" : ""} onClick={() => switchMode("join")}>
-            Join room
-          </button>
-          <button type="button" className={mode === "create" ? "active" : ""} onClick={() => switchMode("create")}>
-            Create room
-          </button>
+        <div className="ig-cover ig-cover-compact">
+          <div className="ig-cover-title ig-cover-title-sm">Bridge</div>
         </div>
 
         <h1 className="ig-entry-title">{mode === "create" ? "Start a new room" : "Join a room"}</h1>

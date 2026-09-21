@@ -3,7 +3,7 @@
 A minimal multi-room chat app: create or join rooms, send messages, see who's
 online, and see typing indicators — all in real time.
 
-**Live app:** https://bridge-alpha-liart.vercel.app/
+**Live app:** https://wire-micro-chat.vercel.app
 
 ## Architecture
 

@@ -543,3 +543,125 @@ input { font-family: inherit; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* ---------- Entry choice screen (Join / Create as big options) ---------- */
+
+.ig-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ig-choice-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--ig-border);
+  border-radius: 14px;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.ig-choice-btn:hover {
+  border-color: var(--ig-blue);
+  background: var(--ig-hover);
+}
+.ig-choice-btn:active { transform: scale(0.99); }
+
+.ig-choice-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #4f9df7, #0095f6);
+}
+
+.ig-choice-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.ig-choice-title { font-weight: 700; font-size: 15.5px; }
+.ig-choice-desc { font-size: 12.5px; color: var(--ig-text-dim); margin-top: 2px; }
+
+.ig-choice-arrow { font-size: 22px; color: var(--ig-text-dim); flex-shrink: 0; }
+
+.ig-back-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ig-text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding: 4px 0;
+}
+.ig-back-row:hover { color: var(--ig-blue); }
+
+/* ---------- Step 1: full cover page ---------- */
+
+.ig-cover-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.ig-cover-cta {
+  max-width: 220px;
+  margin-top: 24px;
+}
+
+/* Compact cover used as a small header on the choose/form steps */
+.ig-cover-compact {
+  margin-bottom: 20px;
+}
+.ig-cover-title-sm {
+  font-size: 22px;
+}
+
+.ig-entry-back {
+  color: var(--ig-blue);
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding: 4px 0;
+}
+
+/* ---------- Step 2: Join / Create choice cards ---------- */
+
+.ig-choice-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--ig-border);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.ig-choice-card:hover {
+  border-color: var(--ig-blue);
+  background: var(--ig-hover);
+}
+.ig-choice-icon {
+  font-size: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--ig-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ig-choice-text { display: flex; flex-direction: column; flex: 1; }
+.ig-choice-title { font-weight: 700; font-size: 15.5px; }
+.ig-choice-sub { font-size: 12.5px; color: var(--ig-text-dim); margin-top: 2px; }
+.ig-choice-arrow { font-size: 22px; color: var(--ig-text-dim); }
